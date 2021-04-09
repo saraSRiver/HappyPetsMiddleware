@@ -73,6 +73,54 @@ public class MascotaDaoImpl implements MascotaDao{
 		return results;		
 	}
 	@Override
+	public Mascota findByPromocion(Connection conection, Integer idPromocion) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet rs=null;
+		Mascota results=null;
+		String sql = null;
+		try {
+			// Ejecuta la query
+			logger.trace("Creating statement...");
+
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("SELECT M.IDMASCOTA, M.NOMBRE, M.DESCRIPCION, M.IDTIPO, ");
+			stringBuilder.append("M.FECHANACIMIENTO, M.VACUNADO, M.BUENOCONANIMALES, ");
+			stringBuilder.append("M.BUENOCONNIÑOS, M.ALERGIA, M.TRATAMIENTO, ");
+			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA ");
+			stringBuilder.append(" FROM MASCOTA M ");
+			stringBuilder.append(" INNER JOIN CLIENTE Cl ON M.IDCLIENTE = Cl.IDCLIENTE ");
+			stringBuilder.append(" WHERE Cl.IDPROMOCION= ? AND M.FOTOFAVORITA = 1 ");
+			sql = stringBuilder.toString();
+
+			logger.trace("findByIdPromocion:"+sql);
+			preparedStatement = conection.prepareStatement(sql,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			int i = 1;
+			preparedStatement.setLong(i++, idPromocion);
+			rs = preparedStatement.executeQuery();	
+
+			// Extract data from result set
+			results = new Mascota();
+			if (rs.next()) {			
+				results = loadNext(conection, rs); 
+			}
+
+		} catch (SQLException se) {
+			logger.error(se);
+			StringBuilder stringBuilder = new StringBuilder()
+			.append("No se ha podido encontrar la mascota del mes ")
+			.append(idPromocion)
+			.append(" ")
+			.append(se);
+			throw new DataException(stringBuilder.toString());
+		} finally {
+			DBUtils.closeResultSet(rs);
+			DBUtils.closePreparedStatement(preparedStatement);
+
+		}
+		return results;	
+	}
+	@Override
 	public List<Mascota> findByIdCliente(Connection conection,Long idCliente) throws DataException{
 
 		PreparedStatement preparedStatement = null;
@@ -329,4 +377,5 @@ public class MascotaDaoImpl implements MascotaDao{
 		return true;
 
 	}
+
 }

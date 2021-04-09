@@ -234,7 +234,7 @@ public class IdiomaDaoImpl implements IdiomaDao {
 
 			logger.trace("Creating Statement...");
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(" DELETE FROM IDIOMACLIENTE IDIDIOMA, IDIOMA ");
+			stringBuilder.append(" DELETE FROM IDIOMACLIENTE ");
 			stringBuilder.append(" WHERE IDCLIENTE= ? ");
 			String queryString = stringBuilder.toString(); 
 
@@ -271,7 +271,7 @@ public class IdiomaDaoImpl implements IdiomaDao {
 
 			logger.trace("Creating Statement...");
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(" DELETE  FROM IDIOMACUIDADOR IDIDIOMA, IDIOMA");
+			stringBuilder.append(" DELETE  FROM IDIOMACUIDADOR ");
 			stringBuilder.append(" WHERE  IDCUIDADOR= ? ");
 			String queryString = stringBuilder.toString(); 
 

@@ -41,6 +41,25 @@ public class MascotaServiceImpl implements MascotaService{
 		return mascota;
 
 	}
+	@Override
+	public Mascota findByPromocion( Integer idPromocion) throws DataException {
+		Connection conection= DBUtils.getConnection();
+		boolean commit = false;
+		Mascota  mascota;
+		try {
+			conection.setAutoCommit(false);
+			mascota=mascotaDao.findByPromocion(conection, idPromocion);
+			commit = true;
+
+		} catch (SQLException se) {
+			logger.error(se);
+			throw new DataException(se);
+		}
+		finally {
+			DBUtils.closeConnection(conection,commit);
+		}
+		return mascota;
+	}
 	public List<Mascota> findByIdCliente(Long idCliente)throws DataException{
 		Connection conection= DBUtils.getConnection();
 		boolean commit = false;
@@ -134,5 +153,6 @@ public class MascotaServiceImpl implements MascotaService{
 		}
 		return true;
 	}
+
 
 }

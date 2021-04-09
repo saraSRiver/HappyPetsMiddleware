@@ -101,6 +101,14 @@ public class DBUtils {
 			}
 		}
 	}
+	public static final int getTotalRows(ResultSet resultSet) throws SQLException {
+		int totalRows = 0;
+		if(resultSet.last()) {
+			totalRows = resultSet.getRow();
+		}
+		resultSet.beforeFirst();
+		return totalRows;
+	}
 }
 
 

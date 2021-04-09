@@ -9,7 +9,7 @@ public class Cliente extends Usuario{
 	private Boolean estadoPromocion;
 	private Promocion promocion;
 	private List<Mascota>mascotas;
-	private boolean estadoActivo;
+
 
 	public Cliente() {
 
@@ -45,12 +45,7 @@ public class Cliente extends Usuario{
 	public void setMascotas(List<Mascota> mascotas) {
 		this.mascotas = mascotas;
 	}
-	public boolean isEstadoActivo() {
-		return estadoActivo;
-	}
-	public void setEstadoActivo(boolean estadoActivo) {
-		this.estadoActivo = estadoActivo;
-	}
+
 	
 	
 

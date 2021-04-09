@@ -506,7 +506,7 @@ public class CuidadorDaoImpl implements CuidadorDao{
 			preparedStatement.setString(i++,cuidador.getPassword());
 			preparedStatement.setString(i++,cuidador.getEmail());
 			preparedStatement.setString(i++,cuidador.getTelefono());
-			preparedStatement.setString(i++, String.valueOf(cuidador.getExperiencia()));
+			preparedStatement.setLong(i++,(cuidador.getExperiencia().getIdExperiencia()));
 
 			preparedStatement.setLong(i++, cuidador.getIdcuidador());
 

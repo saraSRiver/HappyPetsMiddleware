@@ -89,7 +89,7 @@ public class ClienteDaoImpl implements ClienteDao{
 		}
 		return result;		
 	}
-
+	
 	@Override
 	public Cliente findByEmail(Connection conection,String email) throws DataException{
 
@@ -432,6 +432,8 @@ public class ClienteDaoImpl implements ClienteDao{
 		}
 		return true;
 	}
+
+
 
 
 
