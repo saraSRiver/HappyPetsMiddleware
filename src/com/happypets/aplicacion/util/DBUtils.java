@@ -12,7 +12,7 @@ import com.happypets.aplicacion.service.DataException;
 public class DBUtils {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://10.53.124.206:3306/happypets?serverTimezone=UTC&useSSL=false";
+	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/happypets?serverTimezone=UTC&useSSL=false";
 //10.53.124.206
 //127.0.0.1:3306
 	// Database credentials

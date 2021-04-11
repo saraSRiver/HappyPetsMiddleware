@@ -50,7 +50,7 @@ class CuidadorServiceImplTest {
 	void testCuidadorServiceImpl() {
 
 	}
-	@Disabled
+	
 	@Test
 	void testFindById() throws Exception{
 		logger.traceEntry("Testing Cuidador findById...");

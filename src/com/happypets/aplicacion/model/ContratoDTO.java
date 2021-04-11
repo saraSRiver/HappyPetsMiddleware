@@ -3,7 +3,30 @@ package com.happypets.aplicacion.model;
 import java.util.Date;
 
 public class ContratoDTO extends ValueObject{
+	private String nombreCuidador;
+	private String apellidosCuidador;
+	private String nombreCliente;
+	private String apellidosCliente;
+	private String nombreMascota;
+	private String nombreEspecie;
+	private Long idContrato;
+	private Date fechaInicio;
+	private Date fechaFinal;
+	private Double precioFinal;
+	private Long idMascota;
+	private Long idCuidador;
+	private Long idCliente;
+	private char idEstado;
+	private Date fechaContrato;
+	private Long idServicio;
 	
+	public ContratoDTO() {
+
+	}
+	public Long getIdCuidador() {
+		return idCuidador;
+	}
+
 	private String nombreServicio;
 	public String getNombreServicio() {
 		return nombreServicio;
@@ -23,6 +46,25 @@ public class ContratoDTO extends ValueObject{
 	public void setApellidosCuidador(String apellidosCuidador) {
 		this.apellidosCuidador = apellidosCuidador;
 	}
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+	public String getApellidosCliente() {
+		return apellidosCliente;
+	}
+	public void setApellidosCliente(String apellidosCliente) {
+		this.apellidosCliente = apellidosCliente;
+	}
+	public String getNombreMascota() {
+		return nombreMascota;
+	}
+	public void setNombreMascota(String nombreMascota) {
+		this.nombreMascota = nombreMascota;
+	}
+
 	public Long getIdContrato() {
 		return idContrato;
 	}
@@ -80,25 +122,11 @@ public class ContratoDTO extends ValueObject{
 	public void setIdCuidador(Long idCuidador) {
 		this.idCuidador = idCuidador;
 	}
-	private String nombreCuidador;
-	private String apellidosCuidador;
-	private Long idContrato;
-	private Date fechaInicio;
-	private Date fechaFinal;
-	private Double precioFinal;
-	private Long idMascota;
-	private Long idCuidador;
-	private Long idCliente;
-	private char idEstado;
-	private Date fechaContrato;
-	private Long idServicio;
-	public ContratoDTO() {
-
+	public String getNombreEspecie() {
+		return nombreEspecie;
 	}
-	public Long getIdCuidador() {
-		return idCuidador;
+	public void setNombreEspecie(String nombreEspecie) {
+		this.nombreEspecie = nombreEspecie;
 	}
-
-	
 
 }

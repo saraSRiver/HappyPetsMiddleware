@@ -36,12 +36,13 @@ public class ContratoDTODAOImpl implements ContratoDTODAO{
 			logger.trace("Connecting to database...");
 
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(" select c.nombre, c.apellidos, s.nombre_servicio, co.precio_final, ");
-			stringBuilder.append(" co.fecha_contrato,co.idestado, co.idContrato, co.idMascota, co.idServicio, ") ;
-			stringBuilder.append(" co.idCuidador, co.idCliente, co.fecha_inicio, co.fecha_fin ");
-			stringBuilder.append(" from contrato co inner join ");
-			stringBuilder.append(" servicio s on co.idservicio=s.idservicio inner join cuidador c on ");
-			stringBuilder.append(" co.idcuidador=c.idcuidador where co.idCliente = ? ");
+			stringBuilder.append("SELECT C.NOMBRE, C.APELLIDOS, CL.NOMBRE, CL.APELLIDOS, M.NOMBRE, E.NOMBRE_ESPECIE, S.NOMBRE_SERVICIO, CO.PRECIO_FINAL, ");
+			stringBuilder.append(" CO.FECHA_CONTRATO, CO.IDESTADO, CO.IDCONTRATO, CO.IDMASCOTA, CO.IDSERVICIO, ");
+			stringBuilder.append(" CO.IDCUIDADOR, CO.IDCLIENTE, CO.FECHA_INICIO, CO.FECHA_FIN ");
+			stringBuilder.append("  FROM CONTRATO CO INNER JOIN ");
+			stringBuilder.append("	SERVICIO S ON CO.IDSERVICIO=S.IDSERVICIO INNER JOIN MASCOTA M ON M.IDMASCOTA=CO.IDMASCOTA ");
+			stringBuilder.append(" INNER JOIN TIPO E ON M.IDTIPO=E.IDTIPO  INNER JOIN CUIDADOR C ON CO.IDCUIDADOR=C.IDCUIDADOR INNER JOIN CLIENTE CL ON CO.IDCLIENTE=CL.IDCLIENTE ");
+			stringBuilder.append(" WHERE CO.IDCLIENTE = ? ");
 			// Execute a query
 			sql = stringBuilder.toString(); 
 
@@ -76,13 +77,68 @@ public class ContratoDTODAOImpl implements ContratoDTODAO{
 		}
 		return results;
 	}
+	@Override
+	public List<ContratoDTO> findByIdCuidador(Connection conection, Long idCuidador) throws DataException {
+		
+		List<ContratoDTO> results=null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs=null;
+		String sql = null;
+		try {
+			logger.trace("Connecting to database...");
 
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("SELECT C.NOMBRE, C.APELLIDOS, CL.NOMBRE, CL.APELLIDOS, M.NOMBRE, E.NOMBRE_ESPECIE, S.NOMBRE_SERVICIO, CO.PRECIO_FINAL, ");
+			stringBuilder.append(" CO.FECHA_CONTRATO, CO.IDESTADO, CO.IDCONTRATO, CO.IDMASCOTA, CO.IDSERVICIO, ");
+			stringBuilder.append(" CO.IDCUIDADOR, CO.IDCLIENTE, CO.FECHA_INICIO, CO.FECHA_FIN ");
+			stringBuilder.append("  FROM CONTRATO CO INNER JOIN ");
+			stringBuilder.append("	SERVICIO S ON CO.IDSERVICIO=S.IDSERVICIO INNER JOIN MASCOTA M ON M.IDMASCOTA=CO.IDMASCOTA ");
+			stringBuilder.append(" INNER JOIN TIPO E ON M.IDTIPO=E.IDTIPO  INNER JOIN CUIDADOR C ON CO.IDCUIDADOR=C.IDCUIDADOR INNER JOIN CLIENTE CL ON CO.IDCLIENTE=CL.IDCLIENTE ");
+			stringBuilder.append(" WHERE CO.IDCUIDADOR = ? ");
+			// Execute a query
+			sql = stringBuilder.toString();
+
+			logger.trace("findById:"+idCuidador);
+			preparedStatement = conection.prepareStatement(sql,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;
+			preparedStatement.setLong(i++,idCuidador);
+
+			rs = preparedStatement.executeQuery();	
+
+			// Extract data from result set
+			results =new ArrayList<ContratoDTO>();
+			ContratoDTO contrato= new ContratoDTO();
+			while (rs.next()) {			
+				contrato = loadNext( rs); 
+				results.add(contrato);
+			}
+		} catch (SQLException se) {
+			logger.error(se);
+			StringBuilder stringBuilder = new StringBuilder()
+			.append("No se han podido encontrar ")
+			.append(" los contratos del cuidador ")
+			.append(idCuidador)
+			.append(" ")
+			.append(se);
+			throw new DataException(stringBuilder.toString());
+		} finally {
+			DBUtils.closeResultSet(rs);
+			DBUtils.closePreparedStatement(preparedStatement);
+		}
+		return results;
+	}
 	private ContratoDTO loadNext(ResultSet resultSet) throws DataException, SQLException {
 		int i = 1;
 		ContratoDTO contratoDto= new ContratoDTO();
 
 		contratoDto.setNombreCuidador(resultSet.getString(i++));
 		contratoDto.setApellidosCuidador(resultSet.getString(i++));
+		contratoDto.setNombreCliente(resultSet.getString(i++));
+		contratoDto.setApellidosCliente(resultSet.getString(i++));
+		contratoDto.setNombreMascota(resultSet.getString(i++));
+		contratoDto.setNombreEspecie(resultSet.getString(i++));
 		contratoDto.setNombreServicio(resultSet.getString(i++));
 		contratoDto.setPrecioFinal(resultSet.getDouble(i++));
 		contratoDto.setFechaContrato(resultSet.getDate(i++));
@@ -97,4 +153,5 @@ public class ContratoDTODAOImpl implements ContratoDTODAO{
 
 		return contratoDto;
 	}
+
 }

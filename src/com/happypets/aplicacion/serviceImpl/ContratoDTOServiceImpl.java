@@ -44,4 +44,24 @@ public class ContratoDTOServiceImpl implements ContratoDTOService{
 
 	}
 
+	@Override
+	public List<ContratoDTO> findByIdCuidador(Long idCuidador) throws DataException {
+		Connection conection= DBUtils.getConnection();
+		boolean commit = false;
+		List<ContratoDTO> contratosDto;
+		try {
+			conection.setAutoCommit(false);
+			contratosDto=contratoDTODAO.findByIdCuidador(conection, idCuidador);
+			commit = true;
+
+		} catch (SQLException se) {
+			logger.error(se);
+			throw new DataException(se);
+		}
+		finally {
+			DBUtils.closeConnection(conection,commit);
+		}
+		return contratosDto;
+	}
+
 }
