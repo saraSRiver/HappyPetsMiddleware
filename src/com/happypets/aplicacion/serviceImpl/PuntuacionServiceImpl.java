@@ -97,4 +97,24 @@ public class PuntuacionServiceImpl implements PuntuacionService{
 
 	}
 
+	@Override
+	public Puntuacion findPuntuacion(Long idCliente, Long idCuidador) throws DataException {
+		Connection conection= DBUtils.getConnection();
+		boolean commit = false;
+		Puntuacion puntuacion = null;
+		try {
+			conection.setAutoCommit(false);
+			puntuacion = puntuacionDao.findPuntuacion(conection, idCliente, idCuidador);
+			commit = true;
+
+		} catch (SQLException se) {
+			logger.error(se);
+			throw new DataException(se);
+		}
+		finally {
+			DBUtils.closeConnection(conection,commit);
+		}
+		return puntuacion;
+	}
+
 }

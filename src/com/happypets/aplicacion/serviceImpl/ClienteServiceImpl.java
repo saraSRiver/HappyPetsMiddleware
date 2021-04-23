@@ -122,15 +122,11 @@ public class ClienteServiceImpl implements ClienteService{
 			cliente =clienteDao.findByEmail(conection, email);
 			commit = true;
 
+			// el cliente no existe
 			if (cliente==null) {
-				// el cliente no existe
 				
 				throw new UserNotFoundException(email);
-			} else {
-				// el cliente existe			
-				String encryptedPassword = ENCRYPTOR.encryptPassword
-						(password);
-		
+			} 
 				if (ENCRYPTOR.checkPassword(password, cliente.getPassword())) {
 					StringBuilder stringBuilder = new StringBuilder();
 					stringBuilder.append(" Bienvenido/a ");
@@ -140,7 +136,7 @@ public class ClienteServiceImpl implements ClienteService{
 				} else {
 					throw new IncorrectPasswordException();
 				}
-			}	
+				
 		} catch (SQLException se) {
 			logger.error(se);
 			throw new DataException(se);
@@ -155,6 +151,7 @@ public class ClienteServiceImpl implements ClienteService{
 	public boolean baja(Long id) throws DataException {
 		Connection conection= DBUtils.getConnection();
 		boolean commit = false;
+		
 		try {
 			conection.setAutoCommit(false);
 			clienteDao.delete(conection, id);
@@ -174,10 +171,12 @@ public class ClienteServiceImpl implements ClienteService{
 	public Cliente update(Cliente cliente) throws DataException {
 		Connection conection= DBUtils.getConnection();
 		boolean commit = false;
-
-		try {
+		String encryptedPassword = ENCRYPTOR.encryptPassword
+				(cliente.getPassword());
+		cliente.setPassword(encryptedPassword);
+			try {
 			conection.setAutoCommit(false);
-			clienteDao.update(conection, cliente);
+			cliente = clienteDao.update(conection, cliente);
 			commit = true;
 
 		} catch (SQLException se) {

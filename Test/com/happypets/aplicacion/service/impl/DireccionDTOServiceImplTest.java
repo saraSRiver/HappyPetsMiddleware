@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 
 import com.happypets.aplicacion.model.DireccionDTO;
-import com.happypets.aplicacion.service.DataException;
 import com.happypets.aplicacion.service.DireccionDTOService;
 import com.happypets.aplicacion.serviceImpl.DireccionDTOServiceImpl;
 
@@ -34,20 +33,20 @@ class DireccionDTOServiceImplTest {
 	void testDireccionDTOServiceImpl() {
 
 	}
-	@Disabled
+
 	@Test
 	void testFindByIdCliente()throws Exception {
 		logger.traceEntry("Testing DireccionDTO findByIdCliente...");
 
 		DireccionDTO dirDto;
 		dirDto= new DireccionDTO();
-		dirDto=dirDtoServ.findByIdCliente(1L);
+		dirDto=dirDtoServ.findByIdCliente(10L);
 		logger.debug(dirDto);
 		assertNotNull(dirDto);
 
 		logger.traceExit("Saliendo testFindByIdCliente...");
 	}
-
+	@Disabled
 	@Test
 	void testFindByIdCuidador() throws Exception{
 		logger.traceEntry("Testing DireccionDTO findByIdCuidador...");

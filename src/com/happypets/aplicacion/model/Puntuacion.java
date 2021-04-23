@@ -3,7 +3,7 @@ package com.happypets.aplicacion.model;
 public class Puntuacion extends ValueObject{
 	private Long idCliente;
 	private Long idCuidador;
-	private Integer puntuacion;
+	private Double puntuacion;
 	private String comentario;
 
 	public Puntuacion() {
@@ -26,11 +26,11 @@ public class Puntuacion extends ValueObject{
 		this.idCuidador = idCuidador;
 	}
 
-	public Integer getPuntuacion() {
+	public Double getPuntuacion() {
 		return puntuacion;
 	}
 
-	public void setPuntuacion(Integer puntuacion) {
+	public void setPuntuacion(Double puntuacion) {
 		this.puntuacion = puntuacion;
 	}
 

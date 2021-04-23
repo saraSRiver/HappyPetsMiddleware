@@ -71,18 +71,17 @@ public class PromocionServiceImpl implements PromocionService{
 	}
 
 	/*
-	 * TO DO
 	@Override
 	public Promocion recibirPromocion(Long idCliente, 
 			Long idPromocion) throws DataException {
 		Promocion promocion=promocionDao.findByIdCliente(idCliente);
 		Integer nContratos = 0;
 		List<Contrato> contratos=contratoDao.findByHistorialCliente(idCliente);
-		Integer numerador=promocion.getNumerador();
+		Integer numerador=14;
 		for (int i=0; i==numerador;i++) {
 			i=nContratos;
 			if(nContratos==numerador) {
-
+				
 			}
 		}
 		return promocion;

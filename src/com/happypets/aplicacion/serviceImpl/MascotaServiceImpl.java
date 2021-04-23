@@ -84,7 +84,7 @@ public class MascotaServiceImpl implements MascotaService{
 
 		try {
 			conection.setAutoCommit(false);
-			mascotaDao.create(conection, mascota);
+			 mascota = mascotaDao.create(conection, mascota);
 			commit = true;
 
 		} catch (SQLException se) {
@@ -119,7 +119,6 @@ public class MascotaServiceImpl implements MascotaService{
 	public boolean deleteMascota(Long id) throws DataException{
 		Connection conection= DBUtils.getConnection();
 		boolean commit = false;
-
 		try {
 			conection.setAutoCommit(false);
 			mascotaDao.deleteMascota(conection, id);

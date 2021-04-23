@@ -106,23 +106,23 @@ public class ContratoServiceImpl implements ContratoService{
 			ServicioOfrecido servOfre = servOfrecido.findByCuidadorServicio(conection, c.getIdCuidador(), c.getIdServicio());
 			Cliente  cliente = clienteDao.findById(conection, c.getIdCliente());
 			List<Promocion> promociones = promocionDao.findAll(conection);
-		
+
 			if(cliente.getPromocion()!= null) {
 				if(cliente.getEstadoPromocion() == true) {
 					c.setPrecioFinal(calcularDescuento(servOfre.getPrecio(), cliente.getPromocion()
 							.getPorcentajeDescuento()));
 				}
 				else {
-					actualizarPromocionCliente(conection, promociones,
-							c.getIdCliente());
 					c.setPrecioFinal(servOfre.getPrecio());
 				}
 			}
+			else {
+				c.setPrecioFinal(servOfre.getPrecio());
+			}
 
-			actualizarPromocionCliente(conection, 
-					promociones, c.getIdCliente());
 			contratoDao.create(conection, c);
-
+			actualizarPromocionCliente(conection, promociones,
+					c.getIdCliente());
 			commit = true;
 
 		} catch (SQLException se) {
@@ -140,7 +140,7 @@ public class ContratoServiceImpl implements ContratoService{
 			throws DataException {
 		Double descuento=0.0;
 		Double precioFinal;
-		
+
 		descuento=(precio * desc/100);
 		precioFinal=precio-descuento;
 

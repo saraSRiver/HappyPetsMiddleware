@@ -53,7 +53,7 @@ class ContratoServiceImplTest {
 
 		logger.traceExit("Saliendo testFindById...");
 	}
-	@Disabled
+	
 	@Test
 	void testFindByHistorialCuidador() throws Exception {
 		logger.traceEntry("Testing Contrato findById...");
@@ -86,11 +86,11 @@ class ContratoServiceImplTest {
 		contrato.setFechaContrato(DBDataUtils.formatDate("10-02-2021"));
 		contrato.setFechaInicio(DBDataUtils.formatDate("13-02-2021"));
 		contrato.setFechaFinal(DBDataUtils.formatDate("15-02-2021"));
-		contrato.setIdCliente(4L);
-		contrato.setIdCuidador(1L);
-		contrato.setIdMascota(1L);
+		contrato.setIdCliente(10L);
+		contrato.setIdCuidador(2L);
+		contrato.setIdMascota(11L);
 		contrato.setIdEstado('P');
-		contrato.setIdServicio(2L);
+		contrato.setIdServicio(3L);
 	
 		
 		contratoServ.create(contrato);

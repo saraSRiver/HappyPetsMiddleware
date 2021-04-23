@@ -65,7 +65,7 @@ public class CuidadorDaoImpl implements CuidadorDao{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("SELECT C.IDCUIDADOR, C.NOMBRE, C.APELLIDOS, C.EMAIL, ");
 			stringBuilder.append(" C.PASSWORD, C.TELEFONO, C.IDEXPERIENCIA, C.FECHA_BAJA ");
-			stringBuilder.append("	FROM CUIDADOR C WHERE C.IDCUIDADOR= ?  ");
+			stringBuilder.append("	FROM CUIDADOR C WHERE C.IDCUIDADOR= ? AND C.FECHA_BAJA IS NULL ");
 			sql = stringBuilder.toString();
 
 			StringBuilder stringBuilder2 = new StringBuilder();
@@ -115,7 +115,7 @@ public class CuidadorDaoImpl implements CuidadorDao{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("SELECT C.IDCUIDADOR, C.NOMBRE, C.APELLIDOS, C.EMAIL, ");
 			stringBuilder.append(" C.PASSWORD, C.TELEFONO, C.IDEXPERIENCIA, C.FECHA_BAJA ");
-			stringBuilder.append("	FROM CUIDADOR C WHERE C.EMAIL= ?  ");
+			stringBuilder.append("	FROM CUIDADOR C WHERE C.EMAIL= ? AND C.FECHA_BAJA IS NULL ");
 			// Execute a query
 			sql =stringBuilder.toString();
 

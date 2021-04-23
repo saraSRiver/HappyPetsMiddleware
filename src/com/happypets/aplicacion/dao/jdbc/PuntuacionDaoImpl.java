@@ -119,10 +119,58 @@ public class PuntuacionDaoImpl implements PuntuacionDao{
 		}
 		return result;
 	}
+	@Override
+	public Puntuacion findPuntuacion(Connection conection, Long idCliente, Long idCuidador) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet rs=null;
+		Puntuacion pt = null;
+		String sql = null;
+		try {
+			// Execute a query
+			logger.trace("Creating statement...");
+
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("SELECT PU.PUNTUACION, PU.COMENTARIO, ");
+			stringBuilder.append("PU.IDCUIDADOR, PU.IDCLIENTE ");
+			stringBuilder.append(" FROM PUNTUACION PU ");
+			stringBuilder.append(" WHERE PU.IDCLIENTE = ? AND PU.IDCUIDADOR = ?  ");
+			sql = stringBuilder.toString();
+
+			logger.trace(sql);
+			preparedStatement = conection.prepareStatement(sql,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;
+			preparedStatement.setLong(i++,idCliente);
+			preparedStatement.setLong(i++,idCuidador);
+			rs = preparedStatement.executeQuery();
+
+			// Extract data from result set
+		
+			
+			if (rs.next()) {
+				pt = loadNext(rs);
+			}
+
+		}  catch (SQLException se) {
+			logger.error(se);
+			StringBuilder stringBuilder = new StringBuilder()
+			.append("No se han podido encontrar ")
+			.append("las puntuaciones del cliente ")
+			.append(idCliente)
+			.append(se);
+			throw new DataException(stringBuilder.toString());
+		} finally {
+			DBUtils.closeResultSet(rs);
+			DBUtils.closePreparedStatement(preparedStatement);
+
+		}
+		return pt;
+	}
 	private Puntuacion  loadNext(ResultSet resultset) throws SQLException {
 		int i = 1;
 		Puntuacion puntuacion= new Puntuacion();
-		puntuacion.setPuntuacion(resultset.getInt(i++));
+		puntuacion.setPuntuacion(resultset.getDouble(i++));
 		puntuacion.setComentario(resultset.getString(i++));
 		puntuacion.setIdCuidador(resultset.getLong(i++));
 		puntuacion.setIdCliente(resultset.getLong(i++));
@@ -150,7 +198,7 @@ public class PuntuacionDaoImpl implements PuntuacionDao{
 			preparedStatement = conection.prepareStatement(queryString);
 
 			int i = 1;
-			preparedStatement.setInt(i++, pt.getPuntuacion());
+			preparedStatement.setDouble(i++, pt.getPuntuacion());
 			BDNullUtils.setNull(preparedStatement, i++, pt.getComentario());
 			preparedStatement.setLong(i++, pt.getIdCuidador());
 			preparedStatement.setLong(i++, pt.getIdCliente());
@@ -181,7 +229,7 @@ public class PuntuacionDaoImpl implements PuntuacionDao{
 			String queryString = stringBuilder.toString();
 			preparedStatement = conection.prepareStatement(queryString);
 			int i = 1;
-			preparedStatement.setInt(i++, pt.getPuntuacion());
+			preparedStatement.setDouble(i++, pt.getPuntuacion());
 			preparedStatement.setString(i++, pt.getComentario());
 			preparedStatement.setLong(i++, pt.getIdCliente());
 			preparedStatement.setLong(i++, pt.getIdCuidador());
@@ -204,4 +252,5 @@ public class PuntuacionDaoImpl implements PuntuacionDao{
 		}
 		return true;
 	}
+
 }

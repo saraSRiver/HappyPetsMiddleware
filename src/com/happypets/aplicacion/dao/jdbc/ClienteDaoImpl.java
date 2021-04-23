@@ -38,8 +38,6 @@ public class ClienteDaoImpl implements ClienteDao{
 		direccionDao = new DireccionDaoImpl();
 		direccionDto = new DireccionDTODAOImpl();
 		mascotaDao  = new MascotaDaoImpl();
-
-
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class ClienteDaoImpl implements ClienteDao{
 			stringBuilder.append(" CL.TELEFONO, CL.PASSWORD, CL.IDPROMOCION, CL.ESTADO, ");
 			stringBuilder.append(" CL.FECHA_BAJA  ");
 			stringBuilder.append(" FROM CLIENTE CL ");
-			stringBuilder.append(" WHERE CL.IDCLIENTE = ?");
+			stringBuilder.append(" WHERE CL.IDCLIENTE = ? AND CL.FECHA_BAJA IS NULL");
 			sql = stringBuilder.toString();
 
 			logger.trace("findById:"+sql);
@@ -103,7 +101,7 @@ public class ClienteDaoImpl implements ClienteDao{
 			stringBuilder.append("	CL.TELEFONO, CL.PASSWORD, CL.IDPROMOCION, CL.ESTADO, ");
 			stringBuilder.append(" CL.FECHA_BAJA ");
 			stringBuilder.append("	FROM CLIENTE CL ");
-			stringBuilder.append("	WHERE CL.EMAIL = ?");
+			stringBuilder.append("	WHERE CL.EMAIL = ? AND CL.FECHA_BAJA IS NULL");
 			// Execute a query
 			sql =(stringBuilder.toString()); 
 
@@ -140,8 +138,6 @@ public class ClienteDaoImpl implements ClienteDao{
 		}
 		return results;
 	}
-
-
 	private Cliente loadNext(Connection conection,ResultSet resultSet)
 			throws DataException, SQLException {
 		int i = 1;
@@ -291,13 +287,14 @@ public class ClienteDaoImpl implements ClienteDao{
 			if (updatedRows == 0) {
 				throw new DataException(" No ha sido posible actualizar 'cliente' ");
 			}
-			cl = new Cliente();
-			cl=findById(conection, cliente.getIdcliente());
+		
+	
 			//llamada al metodo create para actualizar
 			direccionDao.deleteByCliente(conection, cliente.getIdcliente());
 			direccionDao.createDirCliente(conection, cliente.getDireccion());
 			idiomaDao.deleteByCliente(conection, cliente.getIdcliente());
 			createIdiomaClient(conection, cliente);
+			cl=findById(conection, cliente.getIdcliente());
 		}catch (SQLException se) {
 			logger.error(se);
 			StringBuilder stringBuilder = new StringBuilder()

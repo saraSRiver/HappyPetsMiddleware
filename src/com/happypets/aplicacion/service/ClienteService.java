@@ -19,7 +19,7 @@ public interface ClienteService {
 			UserNotFoundException, IncorrectPasswordException;
 	
 	public boolean baja(Long id)throws DataException;
-	public Cliente update (Cliente cliente)throws DataException;
+	public Cliente update (Cliente cliente)throws DataException, IncorrectPasswordException;
 	public boolean uptPromocion (Integer idPromocion, Long idCliente)
 			throws DataException;
 	public boolean uptEstadoPromocion (boolean estado, Long idCliente)

@@ -75,7 +75,7 @@ class PuntuacionServiceImplTest {
 		
 			Puntuacion puntuacion;
 			puntuacion= new Puntuacion();
-			puntuacion.setPuntuacion(4);
+			puntuacion.setPuntuacion(4.0);
 			puntuacion.setComentario("Muy buen servicio. Semi quedó muy contento");
 			puntuacion.setIdCliente(11L);
 			puntuacion.setIdCuidador(4L);
@@ -94,7 +94,7 @@ class PuntuacionServiceImplTest {
 			List<Puntuacion> puntuaciones;
 			puntuaciones= new ArrayList<Puntuacion>();
 			puntuaciones=puntService.findByidCliente(11L);
-			puntuaciones.get(0).setPuntuacion(5);
+			puntuaciones.get(0).setPuntuacion(5.8);
 			puntService.update(puntuaciones.get(0));
 			logger.debug(puntuaciones);
 			//assertNotNull para objetos, assertTrue si es boolean

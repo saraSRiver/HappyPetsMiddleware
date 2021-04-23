@@ -19,7 +19,7 @@ public class ContratoDTO extends ValueObject{
 	private char idEstado;
 	private Date fechaContrato;
 	private Long idServicio;
-	
+	private String nombreServicio;
 	public ContratoDTO() {
 
 	}
@@ -27,7 +27,7 @@ public class ContratoDTO extends ValueObject{
 		return idCuidador;
 	}
 
-	private String nombreServicio;
+	
 	public String getNombreServicio() {
 		return nombreServicio;
 	}

@@ -15,7 +15,10 @@ public class Contrato extends ValueObject{
 	private char idEstado;
 	private Date fechaContrato;
 	private Long idServicio;
-
+	private String nombreMascota;
+	private String nombreEspecie;
+	private String nombreServicio;
+	
 	public Contrato () {
 
 	}
@@ -104,5 +107,25 @@ public class Contrato extends ValueObject{
 		this.idServicio = idServicio;
 	}
 
-	
+	public String getNombreMascota() {
+		return nombreMascota;
+	}
+
+	public void setNombreMascota(String nombreMascota) {
+		this.nombreMascota = nombreMascota;
+	}
+
+	public String getNombreEspecie() {
+		return nombreEspecie;
+	}
+
+	public void setNombreEspecie(String nombreEspecie) {
+		this.nombreEspecie = nombreEspecie;
+	}
+	public String getNombreServicio() {
+		return nombreServicio;
+	}
+	public void setNombreServicio(String nombreServicio) {
+		this.nombreServicio = nombreServicio;
+	}
 }

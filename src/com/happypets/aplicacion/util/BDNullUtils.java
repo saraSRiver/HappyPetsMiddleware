@@ -31,6 +31,14 @@ public class BDNullUtils {
 			p.setString(pos, value);
 		}
 	}
+	public  static void toNull(PreparedStatement p, int pos, Boolean value) throws SQLException{
+		if(value == null) {
+			p.setNull(pos, Types.BOOLEAN);
+		}
+		else {
+			p.setBoolean(pos, value);
+		}
+	}
 	public static void toNull(PreparedStatement p, int pos, Integer value) throws SQLException{
 		if(value == null) {
 			p.setNull(pos, Types.INTEGER);

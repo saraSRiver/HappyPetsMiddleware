@@ -58,7 +58,7 @@ public class PromocionDaoImpl implements PromocionDao{
 
 			if (rs.next()) {			
 				results = loadNext( rs);
-				logger.trace(results + " aquii");
+	
 			}
 		}  catch (SQLException se) {
 			logger.error(se);
@@ -163,7 +163,7 @@ public class PromocionDaoImpl implements PromocionDao{
 			// Extract data from result set
 			promociones = new ArrayList<Promocion>();
 			Promocion promocion;
-			if (rs.next()) {			
+			while (rs.next()) {			
 				 promocion = loadNext( rs);
 				promociones.add(promocion);
 			}

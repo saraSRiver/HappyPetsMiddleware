@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.happypets.aplicacion.dao.MascotaDao;
 import com.happypets.aplicacion.model.Mascota;
 import com.happypets.aplicacion.service.DataException;
+import com.happypets.aplicacion.util.BDNullUtils;
 import com.happypets.aplicacion.util.DBUtils;
 
 
@@ -39,9 +40,9 @@ public class MascotaDaoImpl implements MascotaDao{
 			stringBuilder.append("SELECT M.IDMASCOTA, M.NOMBRE, M.DESCRIPCION, M.IDTIPO, ");
 			stringBuilder.append("M.FECHANACIMIENTO, M.VACUNADO, M.BUENOCONANIMALES, ");
 			stringBuilder.append("M.BUENOCONNIÑOS, M.ALERGIA, M.TRATAMIENTO, ");
-			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA ");
+			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA, M.FOTOFAVORITA ");
 			stringBuilder.append(" FROM MASCOTA M ");
-			stringBuilder.append(" WHERE M.IDMASCOTA= ? ");
+			stringBuilder.append(" WHERE M.IDMASCOTA= ? AND M.FECHA_BAJA IS NULL");
 			sql = stringBuilder.toString();
 
 			logger.trace("findById:"+sql);
@@ -86,10 +87,10 @@ public class MascotaDaoImpl implements MascotaDao{
 			stringBuilder.append("SELECT M.IDMASCOTA, M.NOMBRE, M.DESCRIPCION, M.IDTIPO, ");
 			stringBuilder.append("M.FECHANACIMIENTO, M.VACUNADO, M.BUENOCONANIMALES, ");
 			stringBuilder.append("M.BUENOCONNIÑOS, M.ALERGIA, M.TRATAMIENTO, ");
-			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA ");
+			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA, M.FOTOFAVORITA ");
 			stringBuilder.append(" FROM MASCOTA M ");
 			stringBuilder.append(" INNER JOIN CLIENTE Cl ON M.IDCLIENTE = Cl.IDCLIENTE ");
-			stringBuilder.append(" WHERE Cl.IDPROMOCION= ? AND M.FOTOFAVORITA = 1 ");
+			stringBuilder.append(" WHERE Cl.IDPROMOCION= ? AND M.FOTOFAVORITA = 1 AND M.FECHA_BAJA IS NULL");
 			sql = stringBuilder.toString();
 
 			logger.trace("findByIdPromocion:"+sql);
@@ -135,9 +136,9 @@ public class MascotaDaoImpl implements MascotaDao{
 			stringBuilder.append("SELECT M.IDMASCOTA, M.NOMBRE, M.DESCRIPCION, M.IDTIPO, ");
 			stringBuilder.append("M.FECHANACIMIENTO, M.VACUNADO, M.BUENOCONANIMALES, ");
 			stringBuilder.append("M.BUENOCONNIÑOS, M.ALERGIA, M.TRATAMIENTO, ");
-			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA ");
+			stringBuilder.append("M.DESPARASITADO, M.MICROCHIP, M.IDCLIENTE, M.FECHA_BAJA, M.FOTOFAVORITA ");
 			stringBuilder.append(" FROM MASCOTA M ");
-			stringBuilder.append(" WHERE M.IDCLIENTE= ? ");
+			stringBuilder.append(" WHERE M.IDCLIENTE= ? AND M.FECHA_BAJA IS NULL ");
 			stringBuilder.append(" ORDER BY M.IDMASCOTA ");
 			// Execute a query
 			sql = stringBuilder.toString(); 
@@ -193,6 +194,7 @@ public class MascotaDaoImpl implements MascotaDao{
 		mascota.setMicrochip(resultset.getBoolean(i++));
 		mascota.setIdCliente(resultset.getLong(i++));
 		mascota.setFechaBaja(resultset.getDate(i++));
+		mascota.setFotoFavorita(resultset.getBoolean(i++));
 
 		return mascota;
 	}
@@ -214,8 +216,8 @@ public class MascotaDaoImpl implements MascotaDao{
 			stringBuilder.append("INSERT INTO MASCOTA(NOMBRE, ");
 			stringBuilder.append(" DESCRIPCION, IDTIPO, FECHANACIMIENTO, VACUNADO, ");
 			stringBuilder.append(" BUENOCONANIMALES, BUENOCONNIÑOS, ALERGIA, TRATAMIENTO, ");
-			stringBuilder.append(" DESPARASITADO, MICROCHIP, IDCLIENTE) ");
-			stringBuilder.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+			stringBuilder.append(" DESPARASITADO, MICROCHIP, IDCLIENTE, FOTOFAVORITA) ");
+			stringBuilder.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
 			String queryString = stringBuilder.toString();
 
 			preparedStatement = conection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
@@ -233,6 +235,7 @@ public class MascotaDaoImpl implements MascotaDao{
 			preparedStatement.setBoolean(i++, mascota.getDesparasitado());
 			preparedStatement.setBoolean(i++, mascota.getMicrochip());
 			preparedStatement.setLong(i++, mascota.getIdCliente());
+			BDNullUtils.toNull(preparedStatement,i++, mascota.getFotoFavorita());
 			preparedStatement.executeUpdate();
 			rs = preparedStatement.getGeneratedKeys();
 			m  = new Mascota();
@@ -267,7 +270,7 @@ public class MascotaDaoImpl implements MascotaDao{
 			stringBuilder.append("  UPDATE MASCOTA SET NOMBRE= ? , DESCRIPCION= ?, ");
 			stringBuilder.append(" IDTIPO= ?, FECHANACIMIENTO= ?, VACUNADO= ?, BUENOCONANIMALES= ?, ");
 			stringBuilder.append(" BUENOCONNIÑOS= ?, ALERGIA= ?, TRATAMIENTO= ?, ");
-			stringBuilder.append(" DESPARASITADO= ?, MICROCHIP= ? ");
+			stringBuilder.append(" DESPARASITADO= ?, MICROCHIP= ?, FOTOFAVORITA=? ");
 			stringBuilder.append(" WHERE IDMASCOTA= ?");
 			String queryString = stringBuilder.toString();
 			preparedStatement = conection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
@@ -283,6 +286,7 @@ public class MascotaDaoImpl implements MascotaDao{
 			preparedStatement.setBoolean(i++, mascota.getTratamiento());
 			preparedStatement.setBoolean(i++, mascota.getDesparasitado());
 			preparedStatement.setBoolean(i++, mascota.getMicrochip());
+			BDNullUtils.toNull(preparedStatement,i++, mascota.getFotoFavorita());
 			preparedStatement.setLong(i++, mascota.getIdMascota());
 
 			int updatedRows = preparedStatement.executeUpdate();

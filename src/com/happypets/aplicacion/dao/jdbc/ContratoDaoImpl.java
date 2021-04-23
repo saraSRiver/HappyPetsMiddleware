@@ -38,9 +38,10 @@ public class ContratoDaoImpl implements ContratoDao{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("SELECT CO.IDCONTRATO, CO.FECHA_CONTRATO, CO.FECHA_INICIO, CO.FECHA_FIN, ");
 			stringBuilder.append("CO.PRECIO_FINAL, CO.IDMASCOTA, CO.IDSERVICIO, ");
-			stringBuilder.append("CO.IDCUIDADOR, CO.IDESTADO, CO.IDCLIENTE ");
-			stringBuilder.append(" FROM CONTRATO CO ");
-			stringBuilder.append("WHERE CO.IDCONTRATO= ? ");
+			stringBuilder.append("CO.IDCUIDADOR, CO.IDESTADO, CO.IDCLIENTE, M.NOMBRE, E.NOMBRE_ESPECIE, S.NOMBRE_SERVICIO ");
+			stringBuilder.append(" FROM CONTRATO CO INNER JOIN ");
+			stringBuilder.append(" SERVICIO S ON CO.IDSERVICIO=S.IDSERVICIO INNER JOIN MASCOTA M ON M.IDMASCOTA=CO.IDMASCOTA ");
+			stringBuilder.append(" INNER JOIN TIPO E ON M.IDTIPO=E.IDTIPO  WHERE CO.IDCONTRATO= ? ");
 			sql = stringBuilder.toString();
 
 			logger.trace("findById:"+sql);
@@ -83,10 +84,11 @@ public class ContratoDaoImpl implements ContratoDao{
 
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("SELECT CO.IDCONTRATO, CO.FECHA_CONTRATO, CO.FECHA_INICIO, CO.FECHA_FIN, ");
-			stringBuilder.append("	 CO.PRECIO_FINAL, CO.IDMASCOTA, CO.IDSERVICIO,  ");
-			stringBuilder.append("	 CO.IDCUIDADOR, CO.IDESTADO, CO.IDCLIENTE ");
-			stringBuilder.append(" FROM CONTRATO CO ");
-			stringBuilder.append("	 WHERE CO.IDCUIDADOR= ? ");
+			stringBuilder.append("CO.PRECIO_FINAL, CO.IDMASCOTA, CO.IDSERVICIO, ");
+			stringBuilder.append("CO.IDCUIDADOR, CO.IDESTADO, CO.IDCLIENTE, M.NOMBRE, E.NOMBRE_ESPECIE, S.NOMBRE_SERVICIO ");
+			stringBuilder.append(" FROM CONTRATO CO INNER JOIN ");
+			stringBuilder.append(" SERVICIO S ON CO.IDSERVICIO=S.IDSERVICIO INNER JOIN MASCOTA M ON M.IDMASCOTA=CO.IDMASCOTA ");
+			stringBuilder.append(" INNER JOIN TIPO E ON M.IDTIPO=E.IDTIPO   WHERE CO.IDCUIDADOR= ? ");
 			// Execute a query
 			sql = stringBuilder.toString();
 
@@ -136,10 +138,11 @@ public class ContratoDaoImpl implements ContratoDao{
 
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("SELECT CO.IDCONTRATO, CO.FECHA_CONTRATO, CO.FECHA_INICIO, CO.FECHA_FIN, ");
-			stringBuilder.append("	 CO.PRECIO_FINAL, CO.IDMASCOTA, CO.IDSERVICIO,  ");
-			stringBuilder.append("	 CO.IDCUIDADOR, CO.IDESTADO, CO.IDCLIENTE ");
-			stringBuilder.append(" FROM CONTRATO CO ");
-			stringBuilder.append("	 WHERE CO.IDCLIENTE= ? ");
+			stringBuilder.append("CO.PRECIO_FINAL, CO.IDMASCOTA, CO.IDSERVICIO, ");
+			stringBuilder.append("CO.IDCUIDADOR, CO.IDESTADO, CO.IDCLIENTE, M.NOMBRE, E.NOMBRE_ESPECIE, S.NOMBRE_SERVICIO ");
+			stringBuilder.append(" FROM CONTRATO CO INNER JOIN ");
+			stringBuilder.append(" SERVICIO S ON CO.IDSERVICIO=S.IDSERVICIO INNER JOIN MASCOTA M ON M.IDMASCOTA=CO.IDMASCOTA ");
+			stringBuilder.append(" INNER JOIN TIPO E ON M.IDTIPO=E.IDTIPO   WHERE CO.IDCLIENTE= ? ");
 			// Execute a query
 			sql = stringBuilder.toString(); 
 
@@ -187,6 +190,9 @@ public class ContratoDaoImpl implements ContratoDao{
 		contrato.setIdCuidador(resultSet.getLong(i++));
 		contrato.setIdEstado(resultSet.getString(i++).charAt(0));
 		contrato.setIdCliente(resultSet.getLong(i++));
+		contrato.setNombreMascota(resultSet.getString(i++));
+		contrato.setNombreEspecie(resultSet.getString(i++));
+		contrato.setNombreServicio(resultSet.getString(i++));
 
 		return contrato;
 	}

@@ -19,6 +19,9 @@ public class Mascota extends ValueObject{
 	private Long idTipo;
 	private Long idCliente;
 	private Date fechaBaja;
+	private Boolean fotoFavorita;
+
+
 
 	public Mascota() {
 
@@ -135,6 +138,13 @@ public class Mascota extends ValueObject{
 
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
+	}
+	public Boolean getFotoFavorita() {
+		return fotoFavorita;
+	}
+
+	public void setFotoFavorita(Boolean fotoFavorita) {
+		this.fotoFavorita = fotoFavorita;
 	}
 	
 	@Override
