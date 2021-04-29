@@ -1,39 +1,46 @@
 package com.happypets.aplicacion.util;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.happypets.aplicacion.configuration.ConfigurationManager;
 import com.happypets.aplicacion.service.DataException;
 
+
 public class DBUtils {
+	private static Logger logger = LogManager.getLogger(DBUtils.class);
 	// JDBC driver name and database URL
-	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/happypets?serverTimezone=UTC&useSSL=false";
-//10.53.124.206
-//127.0.0.1:3306
+	static final String JDBC_DRIVER = "jdbc.driver.classname";
+	static final String DB_URL = "jdbc.url";
+
 	// Database credentials
-	static final String USER = "HappypetDVA";
-	static final String PASS = "promesa93";
+	static final String USER = "jdbc.user";
+	static final String PASS = "jdbc.password";
+	private static ConfigurationManager cfg = ConfigurationManager.getInstance();
 
 	static {
 		try {
 			// Register JDBC driver	
-			Class.forName(JDBC_DRIVER);
+			Class.forName(cfg.getParameter(JDBC_DRIVER));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 
 	public static final Connection getConnection()
 			throws  DataException {		
 		try{
-			return DriverManager.getConnection(DB_URL, USER, PASS);
+			return DriverManager.getConnection(cfg.getParameter(DB_URL), cfg.getParameter(USER), cfg.getParameter(PASS));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 			throw new DataException(e);
 		}
 	}
@@ -44,7 +51,7 @@ public class DBUtils {
 			if (rs != null)
 				rs.close();
 		} catch (SQLException se) {
-			se.printStackTrace();
+			logger.error(se);
 		}
 	}
 
@@ -53,7 +60,7 @@ public class DBUtils {
 			if (preparedStatement != null)
 				preparedStatement.close();
 		} catch (SQLException se) {
-			se.printStackTrace();
+			logger.error(se);
 		}
 	}
 
@@ -76,7 +83,7 @@ public class DBUtils {
 				statement.close();
 			}
 		}catch (SQLException se) {
-			se.printStackTrace();
+			logger.error(se);
 		}
 	}
 

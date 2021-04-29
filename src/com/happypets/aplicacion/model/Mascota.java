@@ -147,20 +147,5 @@ public class Mascota extends ValueObject{
 		this.fotoFavorita = fotoFavorita;
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-	System.out.println(" equals"+o);
-	//return super.equals(o);
-	if(!(o instanceof Mascota)) {
-		return false;
-	}
-	Mascota other= (Mascota)o;
-	return this.getNombre().equals(other.getNombre());
-	}
-	@Override
-	public int hashCode() {
-		System.out.println(" hashCode "+ super.hashCode());
-		//return super.hashCode();
-		return getNombre().hashCode();
-	}
+	
 }

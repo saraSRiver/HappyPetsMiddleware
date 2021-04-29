@@ -102,7 +102,7 @@ public class ClienteServiceImpl implements ClienteService{
 			logger.error(se);
 			throw new DataException(se);
 		} catch (MailException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		} finally {
 			DBUtils.closeConnection(conection,commit);
 

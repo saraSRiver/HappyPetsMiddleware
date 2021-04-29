@@ -6,21 +6,26 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
 
+import com.happypets.aplicacion.configuration.ConfigurationManager;
 import com.happypets.aplicacion.service.MailService;
 import com.happypets.aplicacion.service.exceptions.MailException;
 
 public class MailServiceImpl implements MailService{
-	private static final String EMAIL ="happypetscarers@gmail.com";
+	private static final String EMAIL = "mailService.user";
+	private static final String PASSWORD = "mailService.password";
+	private static final String HOST = "mailService.hostName";
+	private static final String PORT = "mailService.port";
+	private static ConfigurationManager cfg = ConfigurationManager.getInstance();
 	public void sendMail(String subject, String codigo, String...to) 
 			throws MailException {
 		try {
 			Email email = new SimpleEmail();
-			email.setHostName("smtp.gmail.com");
-			email.setSmtpPort(465);
+			email.setHostName(cfg.getParameter(HOST));
+			email.setSmtpPort(Integer.valueOf(cfg.getParameter(PORT)));
 			email.setAuthenticator(new DefaultAuthenticator
-					("happypetscarers@gmail.com", "PromesaSemi93"));
+					(cfg.getParameter(EMAIL), cfg.getParameter(PASSWORD)));
 			email.setSSLOnConnect(true);
-			email.setFrom("happypetscarers@gmail.com");
+			email.setFrom(cfg.getParameter(EMAIL));
 			email.setSubject(subject);
 			email.setMsg(codigo);
 			email.addTo(to);
@@ -30,7 +35,7 @@ public class MailServiceImpl implements MailService{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("Intentando enviar email ");
 			stringBuilder.append(" from ");
-			stringBuilder.append(EMAIL);
+			stringBuilder.append(cfg.getParameter(EMAIL));
 			stringBuilder.append(" a ");
 			stringBuilder.append(to);
 			stringBuilder.append(se);
@@ -41,22 +46,22 @@ public class MailServiceImpl implements MailService{
 			throws MailException {
 		try {
 			HtmlEmail email = new HtmlEmail();
-			email.setHostName("smtp.gmail.com");
-			email.setSmtpPort(465);
+			email.setHostName(cfg.getParameter(HOST));
+			email.setSmtpPort(Integer.valueOf(cfg.getParameter(PORT)));
 			email.setAuthenticator(new DefaultAuthenticator
-					("happypetscarers@gmail.com", "PromesaSemi93"));
+					(cfg.getParameter(EMAIL), cfg.getParameter(PASSWORD)));
 			email.setSSLOnConnect(true);
-			email.setFrom("happypetscarers@gmail.com");
+			email.setFrom(cfg.getParameter(EMAIL));
 			email.setSubject(subject);
 			email.setMsg(codigo);
-			email.addTo("abastosmarketplace@gmail.com");
+			email.addTo(to[0]);
 			email.send();
 
 		}catch(EmailException se) {
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("Intentando enviar email ");
 			stringBuilder.append(" from ");
-			stringBuilder.append(EMAIL);
+			stringBuilder.append(cfg.getParameter(EMAIL));
 			stringBuilder.append(" a ");
 			stringBuilder.append(to);
 			stringBuilder.append(se);

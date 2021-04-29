@@ -15,7 +15,7 @@ public interface ClienteService {
 	public Cliente findByEmail (String email)throws DataException;
 	public Cliente registro (Cliente cliente)throws DataException;
 	public Cliente login (String email, String password)
-			throws DataException, MailException,
+			throws DataException,
 			UserNotFoundException, IncorrectPasswordException;
 	
 	public boolean baja(Long id)throws DataException;

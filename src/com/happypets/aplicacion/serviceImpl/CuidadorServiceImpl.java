@@ -121,12 +121,12 @@ public class CuidadorServiceImpl implements CuidadorService {
 			stringBuilder.append("Usuario ");
 			stringBuilder.append(cuidador.getEmail());
 			stringBuilder.append(" registrado");
-			System.out.println(stringBuilder.toString());
+			
 		} catch (SQLException se) {
 			logger.error(se);
 			throw new DataException(se);
 		} catch (MailException e) {
-			e.printStackTrace();
+			logger.warn(e);
 		} finally {
 			DBUtils.closeConnection(conection,commit);
 
